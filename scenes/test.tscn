@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://b08j52o72lwlm"]
+[gd_scene load_steps=2 format=3 uid="uid://b08j52o72lwlm"]
+
+[ext_resource type="Script" uid="uid://dkicj400got8r" path="res://src/Player.cs" id="1_errlg"]
 
 [node name="test" type="Node2D"]
+
+[node name="Kindness" type="Node" parent="."]
+script = ExtResource("1_errlg")
