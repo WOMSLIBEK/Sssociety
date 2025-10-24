@@ -8,14 +8,18 @@ public partial class Card : Sprite2D
     //this is the resting position of the card and where it snaps back to if moved
     private Vector2 cardPosition; 
 
-    public Vector2 CardPosition  
+    public Vector2 CardPosition
     {
-        get { return cardPosition; }  
-        set {
+        get { return cardPosition; }
+        set
+        {
             cardPosition = value;
             Position = cardPosition;
-         }  
+        }
     }
+    
+    //this is to determine what cards are best for being picked up by the player
+    public float Selectability = 0;
 
 
     public Card (int cardType)
@@ -28,31 +32,35 @@ public partial class Card : Sprite2D
         Texture = ResourceLoader.Load<Texture2D>("res://assets/images/icon.svg");
 
     }
-    
+
     public override void _Process(double delta)
     {
-        Rect2 box = new Rect2(GlobalPosition - .5f*Texture.GetSize(), Texture.GetSize());
-        if(box.HasPoint(GetGlobalMousePosition()))
+        Rect2 box = new Rect2(GlobalPosition - .5f * Texture.GetSize(), Texture.GetSize());
+        if (box.HasPoint(GetGlobalMousePosition()))
         {
             Vector2 thingy = new Vector2(GetGlobalMousePosition().X, GlobalPosition.Y);
             float closeness = 1 - (thingy.DistanceTo(GlobalPosition) / Texture.GetSize().X);
-            
-            Scale = Vector2.One + .5f*new Vector2(
+
+            Scale = Vector2.One + .5f * new Vector2(
                 closeness,
                 closeness);
 
-
-            ZIndex = (int)Mathf.Floor(closeness*3);
+            Selectability = closeness;
+            ZIndex = (int)Mathf.Floor(closeness * 6);
         }
         else
         {
             Scale = Vector2.One;
+            Selectability = 0;
             ZIndex = 0;
         }
-        
-        
+
     }
 
+    public void ResetPosition()
+    {
+        Position = cardPosition;
+    }
     
 
 }
