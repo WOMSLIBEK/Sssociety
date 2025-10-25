@@ -5,16 +5,19 @@ public partial class Card : Sprite2D
 {
     public int cardType = -1;
 
-    //this is the resting position of the card and where it snaps back to if moved
-    private Vector2 cardPosition; 
+    //tthis stops certain processes
+    bool usable = true;
 
-    public Vector2 CardPosition
+    //this is the resting position of the card and where it snaps back to if moved
+    private Vector2 cardStaticPosition; 
+
+    public Vector2 CardStaticPosition
     {
-        get { return cardPosition; }
+        get { return cardStaticPosition; }
         set
         {
-            cardPosition = value;
-            Position = cardPosition;
+            cardStaticPosition = value;
+            Position = cardStaticPosition;
         }
     }
     
@@ -35,6 +38,17 @@ public partial class Card : Sprite2D
 
     public override void _Process(double delta)
     {
+        if (usable)
+        {
+            HighlightCard();
+
+        }
+
+
+    }
+
+    private void HighlightCard()
+    {
         Rect2 box = new Rect2(GlobalPosition - .5f * Texture.GetSize(), Texture.GetSize());
         if (box.HasPoint(GetGlobalMousePosition()))
         {
@@ -54,12 +68,19 @@ public partial class Card : Sprite2D
             Selectability = 0;
             ZIndex = 0;
         }
-
+    }
+    
+    public void DeactivateCard()
+    {
+        usable = false;
+        Selectability = 0;
+        
     }
 
     public void ResetPosition()
     {
-        Position = cardPosition;
+        Position = cardStaticPosition;
+        
     }
     
 

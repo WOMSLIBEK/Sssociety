@@ -1,13 +1,28 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx4j04j50vxmp"]
+[gd_scene load_steps=4 format=3 uid="uid://bx4j04j50vxmp"]
 
 [ext_resource type="Script" uid="uid://dkicj400got8r" path="res://src/Player.cs" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://c4k20k8ssjtol" path="res://src/Gameboard.cs" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://bxb7dlqxkhrgc" path="res://src/CardInteractor.cs" id="2_0wfyh"]
 
 [node name="main" type="Node2D"]
 
-[node name="Kindness" type="Node" parent="."]
+[node name="Gameboard" type="Node2D" parent="."]
+script = ExtResource("1_sugp2")
+
+[node name="Player1" type="Node2D" parent="Gameboard"]
+position = Vector2(-47, -84)
 script = ExtResource("1_o5qli")
 deckComposition = PackedInt32Array(2, 6, 4)
 
-[node name="CardInteractor" type="Node2D" parent="Kindness"]
+[node name="CardInteractor" type="Node2D" parent="Gameboard/Player1"]
 script = ExtResource("2_0wfyh")
+
+[node name="Player2" type="Node2D" parent="Gameboard"]
+position = Vector2(60, -35)
+script = ExtResource("1_o5qli")
+deckComposition = PackedInt32Array(2, 6, 4)
+
+[node name="CardInteractor" type="Node2D" parent="Gameboard/Player2"]
+script = ExtResource("2_0wfyh")
+
+[node name="CardStackPosition" type="Sprite2D" parent="Gameboard"]
