@@ -7,31 +7,36 @@ public partial class Gameboard : Node2D
 {
     Stack<Card> cardsInPlay = new Stack<Card>();
 
-    enum RockPaperScissors
-    {
-        Bite,
-        Hiss,
-        Constrict
-    }
 
     int playerIndex = 0;
     Player[] players = new Player[10];
 
     public override void _Ready()
     {
-        Godot.Collections.Array<Node> list = GetChildren();
-        for (int i = 0; i < list.Count; i++)
-        {
-            Node child = list[i];
-            if (child is Player)
-            {
-                players[playerIndex] = (Player)child;
-                //no need for checks if theres 10 players youve done something wrong
-                playerIndex += 1;
-            }
-            
-        }
+        //GeneratePlayers and puts them on the gameboard
+        PackedScene packedPlayer = GD.Load<PackedScene>("res://scene_objects/Player.tscn");
 
+        foreach ((GameManager.RockPaperScissors playerType, bool isAI) playerInfo in GameManager.gameManager.players)
+        {
+            Player newPlayer = (Player)packedPlayer.Instantiate();
+            newPlayer.InitialisePlayer(playerInfo.playerType, playerInfo.isAI);
+            AddChild(newPlayer);
+            players[playerIndex] = newPlayer;
+            //makes it so only the first player plays first
+            if (playerIndex != 0)
+            {
+                FuckThePlayerAway(newPlayer);
+            }
+            playerIndex += 1;
+
+        }
+        //makes it so the first player is first to play
+        playerIndex = 0;
+    }
+    
+    private void GeneratePlayers()
+    {
+        
     }
 
     //useful for some things but shouldnt give direct acces to cards in practice
@@ -45,7 +50,9 @@ public partial class Gameboard : Node2D
     {
         if (cardsInPlay.Count != 0)
         {
-            if (!ValidInteraction((RockPaperScissors)cardsInPlay.Peek().cardType, (RockPaperScissors)card.cardType))
+            if (!GameManager.ValidInteraction(
+                (GameManager.RockPaperScissors)cardsInPlay.Peek().cardType,
+                (GameManager.RockPaperScissors)card.cardType))
             {
                 return false;
             }
@@ -93,32 +100,6 @@ public partial class Gameboard : Node2D
     
     
 
-
-    //value1 is the established card and value2 is the new card
-    private bool ValidInteraction(RockPaperScissors value1, RockPaperScissors value2)
-    {
-        if (value1 == value2)
-        {
-            return false;
-        }
-
-        if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Constrict)
-        {
-            return false;
-        }
-
-        if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Bite)
-        {
-            return false;
-        }
-        if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Hiss)
-        {
-            return false;
-        }
-        
-
-        return true;
-    }
 
 
     

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://jhdquyxtst73"]
+
+[ext_resource type="Script" uid="uid://dkicj400got8r" path="res://src/Player.cs" id="1_uxywe"]
+[ext_resource type="Script" uid="uid://bxb7dlqxkhrgc" path="res://src/CardInteractor.cs" id="2_obsdd"]
+
+[node name="Player1" type="Node2D"]
+script = ExtResource("1_uxywe")
+
+[node name="CardInteractor" type="Node2D" parent="."]
+script = ExtResource("2_obsdd")

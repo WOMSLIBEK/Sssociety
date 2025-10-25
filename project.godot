@@ -15,6 +15,10 @@ run/main_scene="uid://cwo1vlswilglx"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://assets/images/icon.svg"
 
+[autoload]
+
+GameManager="*res://src/GameManager.cs"
+
 [dotnet]
 
 project/assembly_name="Sssociety"

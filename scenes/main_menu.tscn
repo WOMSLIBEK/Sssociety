@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwo1vlswilglx"]
+[gd_scene load_steps=3 format=3 uid="uid://cwo1vlswilglx"]
 
 [ext_resource type="Script" uid="uid://bqmpwfch0px1x" path="res://src/MenuControl.cs" id="1_l6cm7"]
+[ext_resource type="PackedScene" uid="uid://bmh1oktq8eb2e" path="res://scene_objects/CharacterSelector.tscn" id="2_ekxnf"]
 
-[node name="MainMenu" type="Control" node_paths=PackedStringArray("main", "settings", "gameSetup", "totalPlayersLabel", "totalPlayers", "numberOfAIsLabel", "numberOfAIs")]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("main", "settings", "gameSetup", "totalPlayersLabel", "totalPlayers", "numberOfAIsLabel", "numberOfAIs", "characterSelectors", "AICharacterSelectors")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,8 +18,11 @@ totalPlayersLabel = NodePath("game setup/PlayerAmount")
 totalPlayers = NodePath("game setup/TotalPlayers")
 numberOfAIsLabel = NodePath("game setup/AIAmount")
 numberOfAIs = NodePath("game setup/NumberOfAIs")
+characterSelectors = NodePath("game setup/CharacterSelectors")
+AICharacterSelectors = NodePath("game setup/AICharacterSelector")
 
 [node name="main" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -124,7 +128,6 @@ size_flags_horizontal = 4
 value = 50.0
 
 [node name="game setup" type="VBoxContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -171,6 +174,16 @@ max_value = 4.0
 value = 2.0
 rounded = true
 
+[node name="CharacterSelectors" type="HBoxContainer" parent="game setup"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="CharacterSelector" parent="game setup/CharacterSelectors" instance=ExtResource("2_ekxnf")]
+layout_mode = 2
+
+[node name="CharacterSelector2" parent="game setup/CharacterSelectors" instance=ExtResource("2_ekxnf")]
+layout_mode = 2
+
 [node name="Control" type="Control" parent="game setup"]
 custom_minimum_size = Vector2(0, 21.2)
 layout_mode = 2
@@ -191,6 +204,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 max_value = 1.0
 rounded = true
+
+[node name="AICharacterSelector" type="HBoxContainer" parent="game setup"]
+layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="Control2" type="Control" parent="game setup"]
 custom_minimum_size = Vector2(0, 21.2)
