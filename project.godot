@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Sssociety"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="uid://cwo1vlswilglx"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://assets/images/icon.svg"
+
+[autoload]
+
+GameManager="*res://src/GameManager.cs"
 
 [dotnet]
 
