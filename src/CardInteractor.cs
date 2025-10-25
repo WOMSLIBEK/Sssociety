@@ -6,6 +6,7 @@ public partial class CardInteractor : Node2D
 {
 	Player player;
 	Gameboard gameboard;
+	Sprite2D stackPosition;
 	Card selectedCard = null;
 
 	public override void _Ready()
@@ -13,14 +14,21 @@ public partial class CardInteractor : Node2D
 		player = GetParent<Player>();
 		if (player == null)
 		{
-			GD.PrintErr("PlayerCardDragger could not find parent Player node.");
+			GD.PrintErr("CardInteractor could not find parent Player node.");
 			QueueFree();
 		}
 
 		gameboard = player.GetParent<Gameboard>();
-		if(gameboard == null)
+		if (gameboard == null)
 		{
-			GD.PrintErr("PlayerCardDragger could not find Gameboard node.");
+			GD.PrintErr("CardInteractor could not find Gameboard node.");
+			QueueFree();
+		}
+
+		stackPosition = gameboard.GetNode<Sprite2D>("CardStackPosition");
+		if(stackPosition == null)
+		{
+			GD.PrintErr("CardInteractor could not find CardStackPosition node.");
 			QueueFree();
 		}
 
@@ -63,13 +71,20 @@ public partial class CardInteractor : Node2D
 			{
 				return;
 			}
+			//so they are on different layers and appear on top of each other
 			card.ZIndex = gameboard.GetCardCount() - 50;
+			
 
 			card.DeactivateCard();
 			card.Scale = new Vector2(1, 0.4f);
 
-			card.CardStaticPosition = (GetViewport().GetVisibleRect().Size / 2 - .5f * placementDimensions)
-			+ new Vector2(0, -gameboard.GetCardCount() * 5);
+			//reparent the node to the stack location
+			card.GetParent().RemoveChild(card);
+			stackPosition.AddChild(card);
+			card.CardStaticPosition = Vector2.Zero;
+			stackPosition.Position = GetViewport().GetVisibleRect().Size / 2;
+
+			card.CardStaticPosition = new Vector2(0, -gameboard.GetCardCount() * 5);
 
 
 		}

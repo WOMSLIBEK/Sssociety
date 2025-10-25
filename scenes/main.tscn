@@ -10,8 +10,19 @@
 script = ExtResource("1_sugp2")
 
 [node name="Player1" type="Node2D" parent="Gameboard"]
+position = Vector2(-47, -84)
 script = ExtResource("1_o5qli")
 deckComposition = PackedInt32Array(2, 6, 4)
 
 [node name="CardInteractor" type="Node2D" parent="Gameboard/Player1"]
 script = ExtResource("2_0wfyh")
+
+[node name="Player2" type="Node2D" parent="Gameboard"]
+position = Vector2(60, -35)
+script = ExtResource("1_o5qli")
+deckComposition = PackedInt32Array(2, 6, 4)
+
+[node name="CardInteractor" type="Node2D" parent="Gameboard/Player2"]
+script = ExtResource("2_0wfyh")
+
+[node name="CardStackPosition" type="Sprite2D" parent="Gameboard"]

@@ -14,9 +14,23 @@ public partial class Gameboard : Node2D
         Constrict
     }
 
+    int playerIndex = 0;
+    Player[] players = new Player[10];
+
     public override void _Ready()
     {
-
+        Godot.Collections.Array<Node> list = GetChildren();
+        for (int i = 0; i < list.Count; i++)
+        {
+            Node child = list[i];
+            if (child is Player)
+            {
+                players[playerIndex] = (Player)child;
+                //no need for checks if theres 10 players youve done something wrong
+                playerIndex += 1;
+            }
+            
+        }
 
     }
 
@@ -29,18 +43,55 @@ public partial class Gameboard : Node2D
     //returns true if valid card and false if invalid
     public bool AddCardToStack(Card card)
     {
-        if(cardsInPlay.Count != 0)
+        if (cardsInPlay.Count != 0)
         {
-            if(!ValidInteraction((RockPaperScissors)cardsInPlay.Peek().cardType, (RockPaperScissors)card.cardType) )
+            if (!ValidInteraction((RockPaperScissors)cardsInPlay.Peek().cardType, (RockPaperScissors)card.cardType))
             {
                 return false;
             }
         }
 
 
+        LoadNextPlayer();
+
         cardsInPlay.Push(card);
+
+
+
         return true;
     }
+
+    private void LoadNextPlayer()
+    {
+        playerIndex += 1;
+        if (players[playerIndex] == null)
+        {
+
+            playerIndex = 0;
+        }
+
+        for (int i = 0; i < players.Length; i++)
+        {
+
+            if (players[i] == null)
+            {
+                break;
+            }
+
+            FuckThePlayerAway(players[i]);
+
+        }
+        
+        players[playerIndex].Position = Vector2.Zero;
+
+    }
+    
+    private void FuckThePlayerAway(Player player)
+    {
+        player.Position = new Vector2(0, 5000);
+    }
+    
+    
 
 
     //value1 is the established card and value2 is the new card
