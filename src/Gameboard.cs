@@ -51,16 +51,16 @@ public partial class Gameboard : Node2D
             return false;
         }
 
-        if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Hiss)
+        if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Constrict)
         {
             return false;
         }
 
-        if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Constrict)
+        if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Bite)
         {
             return false;
         }
-        if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Bite)
+        if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Hiss)
         {
             return false;
         }
