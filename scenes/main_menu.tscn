@@ -22,7 +22,6 @@ characterSelectors = NodePath("game setup/CharacterSelectors")
 AICharacterSelectors = NodePath("game setup/AICharacterSelector")
 
 [node name="main" type="VBoxContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -128,6 +127,7 @@ size_flags_horizontal = 4
 value = 50.0
 
 [node name="game setup" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5

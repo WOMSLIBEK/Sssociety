@@ -3,7 +3,7 @@ using System;
 
 public partial class Card : Sprite2D
 {
-    public int cardType = -1;
+    public GameManager.RockPaperScissors cardType;
 
     //tthis stops certain processes
     bool usable = true;
@@ -25,14 +25,27 @@ public partial class Card : Sprite2D
     public float Selectability = 0;
 
 
-    public Card (int cardType)
+    public Card (GameManager.RockPaperScissors cardType)
     {
         this.cardType = cardType;
+        if (cardType == GameManager.RockPaperScissors.Bite)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_bite.png");
+        }
+
+        if (cardType == GameManager.RockPaperScissors.Hiss)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_hiss.png");
+        }
+        
+        if(cardType == GameManager.RockPaperScissors.Constrict)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_constrict.png");
+        }
     }
 
     public override void _Ready()
     {
-        Texture = ResourceLoader.Load<Texture2D>("res://assets/images/icon.svg");
 
     }
 

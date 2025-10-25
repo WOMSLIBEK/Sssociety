@@ -97,7 +97,6 @@ public partial class MenuControl : Control
             i += 1;
         }
 
-        GD.Print(GameManager.gameManager.players[0].ToString(),GameManager.gameManager.players[1].ToString());
 
 
         GetTree().ChangeSceneToFile("res://scenes/main.tscn");

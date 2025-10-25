@@ -79,10 +79,9 @@ public partial class CardInteractor : Node2D
 			card.Scale = new Vector2(1, 0.4f);
 
 			//reparent the node to the stack location
+			card.GetParent<Deck>().RemoveCardFromDeck(card);
 			card.GetParent().RemoveChild(card);
 			stackPosition.AddChild(card);
-			card.CardStaticPosition = Vector2.Zero;
-			stackPosition.Position = GetViewport().GetVisibleRect().Size / 2;
 
 			card.CardStaticPosition = new Vector2(0, -gameboard.GetCardCount() * 5);
 

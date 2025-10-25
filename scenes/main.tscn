@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bx4j04j50vxmp"]
+[gd_scene load_steps=3 format=3 uid="uid://bx4j04j50vxmp"]
 
 [ext_resource type="Script" uid="uid://c4k20k8ssjtol" path="res://src/Gameboard.cs" id="1_sugp2"]
+[ext_resource type="Script" uid="uid://bpaq2tjpfms1o" path="res://src/CardStackMaintainer.cs" id="2_0wfyh"]
 
 [node name="main" type="Node2D"]
 
@@ -8,3 +9,4 @@
 script = ExtResource("1_sugp2")
 
 [node name="CardStackPosition" type="Sprite2D" parent="Gameboard"]
+script = ExtResource("2_0wfyh")
