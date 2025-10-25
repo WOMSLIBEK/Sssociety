@@ -5,6 +5,7 @@ using System.Collections;
 public partial class CardInteractor : Node2D
 {
 	Player player;
+	Gameboard gameboard;
 	Card selectedCard = null;
 
 	public override void _Ready()
@@ -13,6 +14,13 @@ public partial class CardInteractor : Node2D
 		if (player == null)
 		{
 			GD.PrintErr("PlayerCardDragger could not find parent Player node.");
+			QueueFree();
+		}
+
+		gameboard = player.GetParent<Gameboard>();
+		if(gameboard == null)
+		{
+			GD.PrintErr("PlayerCardDragger could not find Gameboard node.");
 			QueueFree();
 		}
 
@@ -25,11 +33,11 @@ public partial class CardInteractor : Node2D
 			selectedCard = GetTopSelectableCard();
 		}
 
-		if(Input.IsActionJustReleased("SelectCard"))
+		if (Input.IsActionJustReleased("SelectCard"))
 		{
 			if (selectedCard != null)
 			{
-				selectedCard.ResetPosition();
+				PlaceCardOnGameboard(selectedCard);
 				selectedCard = null;
 			}
 		}
@@ -39,6 +47,35 @@ public partial class CardInteractor : Node2D
 		{
 			selectedCard.GlobalPosition = GetGlobalMousePosition();
 		}
+	}
+	
+	private void PlaceCardOnGameboard(Card card)
+	{
+		Vector2 placementDimensions = GetViewport().GetVisibleRect().Size/4;
+		Rect2 placeArea = new Rect2(gameboard.Position + GetViewport().GetVisibleRect().Size / 2 - .5f * placementDimensions,
+		 placementDimensions);
+
+		if (placeArea.HasPoint(GetGlobalMousePosition()))
+		{
+			card.ResetPosition();
+
+			if (!gameboard.AddCardToStack(card))
+			{
+				return;
+			}
+			card.ZIndex = gameboard.GetCardCount() - 50;
+
+			card.DeactivateCard();
+			card.Scale = new Vector2(1, 0.4f);
+
+			card.CardStaticPosition = (GetViewport().GetVisibleRect().Size / 2 - .5f * placementDimensions)
+			+ new Vector2(0, -gameboard.GetCardCount() * 5);
+
+
+		}
+		
+		card.ResetPosition();
+		
 	}
 	
 	private Card GetTopSelectableCard()
