@@ -4,6 +4,7 @@ using System.Collections;
 
 public partial class CardInteractor : Node2D
 {
+
 	Player player;
 	Gameboard gameboard;
 	Sprite2D stackPosition;
@@ -72,7 +73,7 @@ public partial class CardInteractor : Node2D
 				return;
 			}
 			//so they are on different layers and appear on top of each other
-			card.ZIndex = gameboard.GetCardCount() - 50;
+			card.ZIndex = gameboard.GetCardCount();
 			
 
 			card.DeactivateCard();

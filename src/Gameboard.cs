@@ -11,6 +11,10 @@ public partial class Gameboard : Node2D
 
     Stack<Card> cardsInPlay = new Stack<Card>();
 
+    [Export]
+    SFXPlayer theSFXPlayer;
+
+
 
 
 
@@ -70,7 +74,12 @@ public partial class Gameboard : Node2D
             }
         }
 
+        theSFXPlayer.PlaySFXBasedOnCard(card);
+
+
+
         LoadNextTurn();
+
         
 
         cardsInPlay.Push(card);
