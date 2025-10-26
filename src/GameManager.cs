@@ -7,7 +7,14 @@ public partial class GameManager : Node
     //these are gameplay variables that are changed during gameplay
     public int turnDirection = 1;
     int playerIndex = 0;
-    public int PlayerIndex{get{return playerIndex;}}
+    public int PlayerIndex { get { return playerIndex; } }
+    
+
+    //this calls at the start of a new round
+    public void ResetVariables()
+    {
+        turnDirection = 1;
+    }
 
 
     public void UpdatePlayerIndex(int customAmount = 0)
@@ -63,7 +70,7 @@ public partial class GameManager : Node
     static public bool ValidInteraction(RockPaperScissors value1, RockPaperScissors value2)
     {
         //special cards are always valid
-        if (value2 == RockPaperScissors.Special)
+        if (value2 == RockPaperScissors.Special || value1 == RockPaperScissors.Special)
         {
             return true;
         }
