@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx4j04j50vxmp"]
+[gd_scene load_steps=5 format=3 uid="uid://bx4j04j50vxmp"]
 
 [ext_resource type="Script" uid="uid://c4k20k8ssjtol" path="res://src/Gameboard.cs" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://bpaq2tjpfms1o" path="res://src/CardStackMaintainer.cs" id="2_0wfyh"]
+[ext_resource type="Script" uid="uid://ctrhhdpaudhuu" path="res://src/OtherPlayersDisplay.cs" id="3_sugp2"]
+[ext_resource type="Texture2D" uid="uid://bxsdfkr212nan" path="res://assets/images/UI/Egg.png" id="4_jyhfs"]
 
 [node name="main" type="Node2D"]
 
@@ -10,3 +12,72 @@ script = ExtResource("1_sugp2")
 
 [node name="CardStackPosition" type="Sprite2D" parent="Gameboard"]
 script = ExtResource("2_0wfyh")
+
+[node name="OtherPlayersDisplay" type="Node2D" parent="Gameboard"]
+script = ExtResource("3_sugp2")
+
+[node name="InGameUI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="InGameUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="InGameUI/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 656.0
+grow_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InGameUI/Control/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="EggsToWin" type="RichTextLabel" parent="InGameUI/Control/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[right] [color=#a4ea88]EGGS[/color] to win [color=#a4ea88]4[/color]"
+fit_content = true
+
+[node name="TextureRect" type="TextureRect" parent="InGameUI/Control/HBoxContainer/HBoxContainer"]
+layout_direction = 3
+layout_mode = 2
+texture = ExtResource("4_jyhfs")
+stretch_mode = 4
+
+[node name="BiteRules" type="RichTextLabel" parent="InGameUI/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[right] [color=#f5bb57]BITE[/color] beats [color=#83fcfc]CONSTRICT[/color]"
+fit_content = true
+
+[node name="HissRules" type="RichTextLabel" parent="InGameUI/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[right] [color=#f7e943]HISS[/color] beats [color=#f5bb57]BITE[/color]"
+fit_content = true
+
+[node name="ConstrictRules" type="RichTextLabel" parent="InGameUI/Control/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[right] [color=#83fcfc]CONSTRICT[/color] beats [color=#f7e943]HISS[/color]"
+fit_content = true

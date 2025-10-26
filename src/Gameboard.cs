@@ -2,19 +2,30 @@ using Godot;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class Gameboard : Node2D
 {
+    [Signal]
+    public delegate void NextTurnEventHandler();
+
     Stack<Card> cardsInPlay = new Stack<Card>();
 
 
+    //these are gameplay variables that are changed during gameplay
+    int turnDirection = 1;
+
+
     int playerIndex = 0;
-    Player[] players = new Player[10];
+    public int PlayerIndex{get{return playerIndex;}}
+
+    Player[] players;
 
     public override void _Ready()
     {
         //GeneratePlayers and puts them on the gameboard
         PackedScene packedPlayer = GD.Load<PackedScene>("res://scene_objects/Player.tscn");
+        players = new Player[GameManager.gameManager.players.Count()];
 
         foreach ((GameManager.RockPaperScissors playerType, bool isAI) playerInfo in GameManager.gameManager.players)
         {
@@ -33,10 +44,10 @@ public partial class Gameboard : Node2D
         //makes it so the first player is first to play
         playerIndex = 0;
     }
-    
+
     private void GeneratePlayers()
     {
-        
+
     }
 
     //useful for some things but shouldnt give direct acces to cards in practice
@@ -58,8 +69,8 @@ public partial class Gameboard : Node2D
             }
         }
 
-
-        LoadNextPlayer();
+        LoadNextTurn();
+        
 
         cardsInPlay.Push(card);
 
@@ -68,14 +79,42 @@ public partial class Gameboard : Node2D
         return true;
     }
 
+    private void LoadNextTurn()
+    {
+        DetermineNextIndex();
+        LoadNextPlayer();
+        EmitSignal(SignalName.NextTurn);
+    }
+
+    private void DetermineNextIndex()
+    {
+        
+        if(turnDirection < 0)
+        {
+            for (int i = 0; i < -turnDirection; i++)
+            {
+                playerIndex -= 1;
+                if (playerIndex < 0)
+                {
+                    playerIndex = players.Count() - 1;
+                }
+            }
+            return;
+            
+        }
+
+        for(int i = 0; i < turnDirection; i++)
+        {
+            playerIndex += 1;
+            if(playerIndex >= players.Count())
+            {
+                playerIndex = 0;
+            }
+        }
+    }
+
     private void LoadNextPlayer()
     {
-        playerIndex += 1;
-        if (players[playerIndex] == null)
-        {
-
-            playerIndex = 0;
-        }
 
         for (int i = 0; i < players.Length; i++)
         {
