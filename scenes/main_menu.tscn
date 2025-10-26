@@ -1,0 +1,229 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwo1vlswilglx"]
+
+[ext_resource type="Script" uid="uid://bqmpwfch0px1x" path="res://src/MenuControl.cs" id="1_l6cm7"]
+[ext_resource type="PackedScene" uid="uid://bmh1oktq8eb2e" path="res://scene_objects/CharacterSelector.tscn" id="2_ekxnf"]
+
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("main", "settings", "gameSetup", "totalPlayersLabel", "totalPlayers", "numberOfAIsLabel", "numberOfAIs", "characterSelectors", "AICharacterSelectors")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l6cm7")
+main = NodePath("main")
+settings = NodePath("settings")
+gameSetup = NodePath("game setup")
+totalPlayersLabel = NodePath("game setup/PlayerAmount")
+totalPlayers = NodePath("game setup/TotalPlayers")
+numberOfAIsLabel = NodePath("game setup/AIAmount")
+numberOfAIs = NodePath("game setup/NumberOfAIs")
+characterSelectors = NodePath("game setup/CharacterSelectors")
+AICharacterSelectors = NodePath("game setup/AICharacterSelector")
+
+[node name="main" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_right = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="RichTextLabel" parent="main"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 81
+bbcode_enabled = true
+text = "[center] Game Title [/center]"
+fit_content = true
+
+[node name="Play" type="Button" parent="main"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Play Game"
+
+[node name="Settings" type="Button" parent="main"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Settings"
+
+[node name="Exit Game" type="Button" parent="main"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Exit"
+
+[node name="settings" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_right = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Back To Menu" type="Button" parent="settings"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 30
+text = "<-- Back"
+
+[node name="Settings2" type="RichTextLabel" parent="settings"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 81
+bbcode_enabled = true
+text = "[center] Settings [/center]"
+fit_content = true
+
+[node name="MusicVolume" type="RichTextLabel" parent="settings"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[center] Music Volume [/center]"
+fit_content = true
+
+[node name="HScrollBar" type="HScrollBar" parent="settings"]
+custom_minimum_size = Vector2(200, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 50.0
+
+[node name="Control" type="Control" parent="settings"]
+custom_minimum_size = Vector2(0, 21.2)
+layout_mode = 2
+
+[node name="EffectsVolume" type="RichTextLabel" parent="settings"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[center] Effects Volume [/center]"
+fit_content = true
+
+[node name="HScrollBar2" type="HScrollBar" parent="settings"]
+custom_minimum_size = Vector2(200, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 50.0
+
+[node name="game setup" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.0
+offset_right = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Back To Menu" type="Button" parent="game setup"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 30
+text = "<-- Back"
+
+[node name="Title" type="RichTextLabel" parent="game setup"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 81
+bbcode_enabled = true
+text = "[center] Game Setup [/center]"
+fit_content = true
+
+[node name="PlayerAmount" type="RichTextLabel" parent="game setup"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[center] Total Players: 2 [/center]"
+fit_content = true
+
+[node name="TotalPlayers" type="HScrollBar" parent="game setup"]
+custom_minimum_size = Vector2(200, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+min_value = 2.0
+max_value = 4.0
+value = 2.0
+rounded = true
+
+[node name="CharacterSelectors" type="HBoxContainer" parent="game setup"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="CharacterSelector" parent="game setup/CharacterSelectors" instance=ExtResource("2_ekxnf")]
+layout_mode = 2
+
+[node name="CharacterSelector2" parent="game setup/CharacterSelectors" instance=ExtResource("2_ekxnf")]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="game setup"]
+custom_minimum_size = Vector2(0, 21.2)
+layout_mode = 2
+
+[node name="AIAmount" type="RichTextLabel" parent="game setup"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[center] Number of AIs: 0 [/center]"
+fit_content = true
+
+[node name="NumberOfAIs" type="HScrollBar" parent="game setup"]
+custom_minimum_size = Vector2(200, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 1.0
+rounded = true
+
+[node name="AICharacterSelector" type="HBoxContainer" parent="game setup"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Control2" type="Control" parent="game setup"]
+custom_minimum_size = Vector2(0, 21.2)
+layout_mode = 2
+
+[node name="Start Game" type="Button" parent="game setup"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Start!"
+
+[connection signal="pressed" from="main/Play" to="." method="PlayPressed"]
+[connection signal="pressed" from="main/Settings" to="." method="SettingsPressed"]
+[connection signal="pressed" from="main/Exit Game" to="." method="ExitPressed"]
+[connection signal="pressed" from="settings/Back To Menu" to="." method="Back"]
+[connection signal="pressed" from="game setup/Back To Menu" to="." method="Back"]
+[connection signal="value_changed" from="game setup/TotalPlayers" to="." method="PlayerAmountChanged"]
+[connection signal="value_changed" from="game setup/NumberOfAIs" to="." method="NumberOfAIsChanged"]
+[connection signal="pressed" from="game setup/Start Game" to="." method="StartGame"]

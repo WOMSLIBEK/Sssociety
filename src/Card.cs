@@ -3,18 +3,21 @@ using System;
 
 public partial class Card : Sprite2D
 {
-    public int cardType = -1;
+    public GameManager.RockPaperScissors cardType;
+
+    //tthis stops certain processes
+    bool usable = true;
 
     //this is the resting position of the card and where it snaps back to if moved
-    private Vector2 cardPosition; 
+    private Vector2 cardStaticPosition; 
 
-    public Vector2 CardPosition
+    public Vector2 CardStaticPosition
     {
-        get { return cardPosition; }
+        get { return cardStaticPosition; }
         set
         {
-            cardPosition = value;
-            Position = cardPosition;
+            cardStaticPosition = value;
+            Position = cardStaticPosition;
         }
     }
     
@@ -22,18 +25,42 @@ public partial class Card : Sprite2D
     public float Selectability = 0;
 
 
-    public Card (int cardType)
+    public Card (GameManager.RockPaperScissors cardType)
     {
         this.cardType = cardType;
+        if (cardType == GameManager.RockPaperScissors.Bite)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_bite.png");
+        }
+
+        if (cardType == GameManager.RockPaperScissors.Hiss)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_hiss.png");
+        }
+        
+        if(cardType == GameManager.RockPaperScissors.Constrict)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_constrict.png");
+        }
     }
 
     public override void _Ready()
     {
-        Texture = ResourceLoader.Load<Texture2D>("res://assets/images/icon.svg");
 
     }
 
     public override void _Process(double delta)
+    {
+        if (usable)
+        {
+            HighlightCard();
+
+        }
+
+
+    }
+
+    private void HighlightCard()
     {
         Rect2 box = new Rect2(GlobalPosition - .5f * Texture.GetSize(), Texture.GetSize());
         if (box.HasPoint(GetGlobalMousePosition()))
@@ -54,12 +81,19 @@ public partial class Card : Sprite2D
             Selectability = 0;
             ZIndex = 0;
         }
-
+    }
+    
+    public void DeactivateCard()
+    {
+        usable = false;
+        Selectability = 0;
+        
     }
 
     public void ResetPosition()
     {
-        Position = cardPosition;
+        Position = cardStaticPosition;
+        
     }
     
 

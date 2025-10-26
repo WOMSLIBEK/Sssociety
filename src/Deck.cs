@@ -1,21 +1,19 @@
 using Godot;
 using System;
 
-public partial class Deck : Node
+public partial class Deck : Node2D
 {
     const int deckSize = 12;
     Card[] cards = new Card[deckSize];
 
-    enum RockPaperScissors
-    {
-        Violence,
-        Kindness,
-        Retribution
-    }
+    //card dimensions are very unliekly to change
+    Vector2 CardDimensions = new Vector2(104, 160);
 
-    public Deck(int violenceAmount, int kindnessAmount, int retributionAmount)
+
+
+    public Deck(int bite, int hiss, int constrict)
     {
-        if (violenceAmount + kindnessAmount + retributionAmount != deckSize)
+        if (bite + hiss + constrict != deckSize)
         {
             throw new ArgumentException("The total number of cards must be equal to the deck size: " + deckSize);
         }
@@ -23,39 +21,74 @@ public partial class Deck : Node
         // Initialize cards array and add to scene tree
         for (int i = 0; i < deckSize; i++)
         {
-            if (i < violenceAmount)
+            if (i < bite)
             {
-                cards[i] = new Card((int)RockPaperScissors.Violence);
+                cards[i] = new Card(GameManager.RockPaperScissors.Bite);
             }
-            else if (i < violenceAmount + kindnessAmount && i >= violenceAmount)
+            else if (i < bite + hiss && i >= bite)
             {
-                cards[i] = new Card((int)RockPaperScissors.Kindness);
+                cards[i] = new Card(GameManager.RockPaperScissors.Hiss);
             }
             else
             {
-                cards[i] = new Card((int)RockPaperScissors.Retribution);
+                cards[i] = new Card(GameManager.RockPaperScissors.Constrict);
             }
 
             cards[i].Name = "Card_" + i;
             AddChild(cards[i]);
         }
 
-        ResetCardPositions();
+
 
     }
 
-
     
+    public override void _Ready()
+    {
+        base._Ready();
+    }
+
+
+    Vector2 lastScreenSize = Vector2.Zero;
+    public override void _Process(double delta)
+    {
+        if(GetViewport().GetVisibleRect().Size != lastScreenSize)
+        {
+            lastScreenSize = GetViewport().GetVisibleRect().Size;
+            ResetCardPositions();
+        }
+    }
+
+
+
     private void ResetCardPositions()
     {
         for (int i = 0; i < deckSize; i++)
         {
-            Vector2 screenSize = new Vector2(1152,648);
-            Vector2 offset = new Vector2(screenSize.X/2, screenSize.Y);
+            if(cards[i] == null)
+            {
+                continue;
+            }
 
-            cards[i].CardPosition = offset + new Vector2(
-                ((i - deckSize / 2) * (screenSize.X / 1.5f)) / deckSize, -200); // Slight offset for visibility
-            
+            Vector2 screenSize = GetViewport().GetVisibleRect().Size;
+            Vector2 offset = new Vector2(screenSize.X / 2, screenSize.Y);
+
+
+            cards[i].CardStaticPosition = offset + new Vector2(
+                ((i - deckSize / 2) * (screenSize.X / 1.5f)) / deckSize, -CardDimensions.Y / 2 - 20); // Slight offset for visibility
+
+        }
+    }
+    
+    public void RemoveCardFromDeck(Card card)
+    {
+        for (int i = 0; i < deckSize; i++)
+        {
+            if(cards[i] == card)
+            {
+                cards[i] = null;
+            }
+
         }
     }
 }

@@ -11,13 +11,21 @@ config_version=5
 [application]
 
 config/name="Sssociety"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="uid://cwo1vlswilglx"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://assets/images/icon.svg"
+
+[autoload]
+
+GameManager="*res://src/GameManager.cs"
 
 [dotnet]
 
 project/assembly_name="Sssociety"
+
+[gui]
+
+theme/custom_font="uid://b0nkl3ifn24lh"
 
 [input]
 
@@ -29,5 +37,7 @@ SelectCard={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.184314, 0.137255, 0.109804, 1)

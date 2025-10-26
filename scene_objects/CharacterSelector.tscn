@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmh1oktq8eb2e"]
+
+[ext_resource type="Texture2D" uid="uid://bmy28o3ry4ra8" path="res://assets/images/characters/Gorgon3Smaller.png" id="1_dhdnx"]
+[ext_resource type="Texture2D" uid="uid://dgs6bwptpq83v" path="res://assets/images/characters/Gorgon1Smaller.png" id="1_rf1n6"]
+[ext_resource type="Texture2D" uid="uid://d12a8npuqt18l" path="res://assets/images/characters/Gorgon2Smaller.png" id="2_dhdnx"]
+
+[node name="CharacterSelector" type="OptionButton"]
+clip_contents = true
+toggle_mode = false
+selected = 0
+item_count = 3
+popup/item_0/icon = ExtResource("1_dhdnx")
+popup/item_0/id = 0
+popup/item_1/icon = ExtResource("2_dhdnx")
+popup/item_1/id = 1
+popup/item_2/icon = ExtResource("1_rf1n6")
+popup/item_2/id = 2
