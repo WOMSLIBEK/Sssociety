@@ -4,6 +4,7 @@ using System;
 public partial class Card : Sprite2D
 {
     public GameManager.RockPaperScissors cardType;
+    private AllCardTypes trueType;
 
     //tthis stops certain processes
     bool usable = true;
@@ -20,28 +21,77 @@ public partial class Card : Sprite2D
             Position = cardStaticPosition;
         }
     }
+
+    public enum AllCardTypes
+    {
+        Empty = -1,
+        Bite,
+        Hiss,
+        Constrict,
+        Skip,
+        Reverse,
+        Inverse,
+        BiteUnique,
+        HissUnique,
+        ConstrictUnique
+    }
     
     //this is to determine what cards are best for being picked up by the player
     public float Selectability = 0;
 
 
-    public Card (GameManager.RockPaperScissors cardType)
+    public Card (AllCardTypes cardType)
     {
-        this.cardType = cardType;
-        if (cardType == GameManager.RockPaperScissors.Bite)
+        trueType = cardType;
+
+        //card type is for external use this simplification makes code less messy
+        if ((GameManager.RockPaperScissors)cardType == GameManager.RockPaperScissors.Bite ||
+        (GameManager.RockPaperScissors)cardType == GameManager.RockPaperScissors.Hiss ||
+        (GameManager.RockPaperScissors)cardType == GameManager.RockPaperScissors.Constrict)
         {
-            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_bite.png");
+            this.cardType = (GameManager.RockPaperScissors)cardType;
+        }
+        else
+        {
+            this.cardType = GameManager.RockPaperScissors.Special;
         }
 
-        if (cardType == GameManager.RockPaperScissors.Hiss)
+
+
+        if (cardType == AllCardTypes.Bite)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_bite.png");
+            return;
+        }
+
+        if (cardType == AllCardTypes.Hiss)
         {
             Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_hiss.png");
+            return;
         }
-        
-        if(cardType == GameManager.RockPaperScissors.Constrict)
+
+        if (cardType == AllCardTypes.Constrict)
         {
             Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_constrict.png");
+            return;
         }
+
+        if (cardType == AllCardTypes.Skip)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_wild.png");
+            return;
+        }
+        if (cardType == AllCardTypes.Reverse)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_reverse.png");
+            return;
+        }
+        
+        Texture = ResourceLoader.Load<Texture2D>("res://assets/images/UI/Egg.png");
+
+
+        
+
     }
 
     public override void _Ready()
@@ -62,6 +112,7 @@ public partial class Card : Sprite2D
 
     private void HighlightCard()
     {
+        Texture.GetSize();
         Rect2 box = new Rect2(GlobalPosition - .5f * Texture.GetSize(), Texture.GetSize());
         if (box.HasPoint(GetGlobalMousePosition()))
         {
@@ -82,6 +133,24 @@ public partial class Card : Sprite2D
             ZIndex = 0;
         }
     }
+    //this just looks for a type of script and runs it
+    public void ActivateSpecialAbility()
+    {
+        if (trueType == AllCardTypes.Reverse)
+        {
+            //this should reverse direction
+            GameManager.gameManager.turnDirection *= -1;
+        }
+
+        if(trueType == AllCardTypes.Skip)
+        {
+            //makes the game go for an extra turn before loading the new one
+            GameManager.gameManager.UpdatePlayerIndex(GameManager.gameManager.turnDirection);
+        }
+        
+        
+    }
+
     
     public void DeactivateCard()
     {

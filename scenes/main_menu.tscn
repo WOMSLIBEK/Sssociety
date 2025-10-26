@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwo1vlswilglx"]
+[gd_scene load_steps=7 format=3 uid="uid://cwo1vlswilglx"]
 
 [ext_resource type="Script" uid="uid://bqmpwfch0px1x" path="res://src/MenuControl.cs" id="1_l6cm7"]
 [ext_resource type="PackedScene" uid="uid://bmh1oktq8eb2e" path="res://scene_objects/CharacterSelector.tscn" id="2_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://dwmtcjf0e3spp" path="res://assets/images/UI/title_back.png" id="3_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://c6cfiw6rm1h3l" path="res://assets/images/UI/Title_gorgons.png" id="3_wu84c"]
+[ext_resource type="AudioStream" uid="uid://caa4ofpm1d8kk" path="res://assets/music/untitled snake game main theme v3.wav" id="5_8ln24"]
+[ext_resource type="AudioStream" uid="uid://d154jxmjw10xs" path="res://assets/music/hiss 1.wav" id="6_rtw2f"]
 
-[node name="MainMenu" type="Control" node_paths=PackedStringArray("main", "settings", "gameSetup", "totalPlayersLabel", "totalPlayers", "numberOfAIsLabel", "numberOfAIs", "characterSelectors", "AICharacterSelectors")]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("main", "settings", "gameSetup", "totalPlayersLabel", "totalPlayers", "numberOfAIsLabel", "numberOfAIs", "characterSelectors", "AICharacterSelectors", "SFXPlayer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,6 +24,17 @@ numberOfAIsLabel = NodePath("game setup/AIAmount")
 numberOfAIs = NodePath("game setup/NumberOfAIs")
 characterSelectors = NodePath("game setup/CharacterSelectors")
 AICharacterSelectors = NodePath("game setup/AICharacterSelector")
+SFXPlayer = NodePath("SFXPlayer")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_bqqt6")
+expand_mode = 2
 
 [node name="main" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -33,15 +48,10 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Title" type="RichTextLabel" parent="main"]
-custom_minimum_size = Vector2(500, 0)
+[node name="TextureRect" type="TextureRect" parent="main"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_font_sizes/normal_font_size = 81
-bbcode_enabled = true
-text = "[center] Game Title [/center]"
-fit_content = true
+texture = ExtResource("3_wu84c")
+stretch_mode = 2
 
 [node name="Play" type="Button" parent="main"]
 layout_mode = 2
@@ -219,10 +229,21 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 30
 text = "Start!"
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_8ln24")
+autoplay = true
+bus = &"Music"
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_rtw2f")
+bus = &"SFX"
+
 [connection signal="pressed" from="main/Play" to="." method="PlayPressed"]
 [connection signal="pressed" from="main/Settings" to="." method="SettingsPressed"]
 [connection signal="pressed" from="main/Exit Game" to="." method="ExitPressed"]
 [connection signal="pressed" from="settings/Back To Menu" to="." method="Back"]
+[connection signal="value_changed" from="settings/HScrollBar" to="." method="MusicVolumeChanged"]
+[connection signal="value_changed" from="settings/HScrollBar2" to="." method="SFXVolumeChanged"]
 [connection signal="pressed" from="game setup/Back To Menu" to="." method="Back"]
 [connection signal="value_changed" from="game setup/TotalPlayers" to="." method="PlayerAmountChanged"]
 [connection signal="value_changed" from="game setup/NumberOfAIs" to="." method="NumberOfAIsChanged"]

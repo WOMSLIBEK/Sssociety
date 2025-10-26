@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bui7wiirq0anm"
+path="res://.godot/imported/dealing cards.wav-731c1232e856373c6c10d04119ef1b03.sample"
+
+[deps]
+
+source_file="res://assets/music/dealing cards.wav"
+dest_files=["res://.godot/imported/dealing cards.wav-731c1232e856373c6c10d04119ef1b03.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

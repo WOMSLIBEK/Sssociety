@@ -24,6 +24,9 @@ public partial class MenuControl : Control
     [Export]
     HBoxContainer AICharacterSelectors;
 
+    [Export]
+    AudioStreamPlayer2D SFXPlayer;
+
 
     public void PlayPressed()
     {
@@ -100,6 +103,23 @@ public partial class MenuControl : Control
 
 
         GetTree().ChangeSceneToFile("res://scenes/main.tscn");
+    }
+
+    public void MusicVolumeChanged(float value)
+    {
+        int musicBusIndex = AudioServer.GetBusIndex("Music");
+        float audioAmount = -60f + 80f * (value / 100);
+        AudioServer.SetBusVolumeDb(musicBusIndex, audioAmount);
+
+    }
+    
+    public void SFXVolumeChanged(float value)
+    {
+        int sfxBusIndex = AudioServer.GetBusIndex("SFX");
+        float audioAmount = -60f + 80f * (value / 100);
+        AudioServer.SetBusVolumeDb(sfxBusIndex, audioAmount);
+
+        SFXPlayer.Play();
     }
 
 
