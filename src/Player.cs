@@ -9,41 +9,42 @@ public partial class Player : Node2D
     //default is none of the main presets
     int[] deckComposition = new int[3] { 4, 4, 4 };
 
-    int[] bitePreset = new int[3] { 6, 4, 2 };
-    int[] hissPreset = new int[3] { 2, 6, 4 };
-    int[] constrictPreset = new int[3] {4,2,6 };
-    
-    public void InitialisePlayer(GameManager.RockPaperScissors presetChoice,bool AI)
+//    int[] bitePreset = new int[3] { 6, 4, 2 };
+//    int[] hissPreset = new int[3] { 2, 6, 4 };
+//    int[] constrictPreset = new int[3] {4,2,6 };
+    Deck playerDeck;
+
+    public void InitialisePlayer(GameManager.RockPaperScissors presetChoice, bool AI)
     {
         if (presetChoice == GameManager.RockPaperScissors.Bite)
         {
-            deckComposition = bitePreset;
             gorgon.Texture = ResourceLoader.Load<Texture2D>("res://assets/images/characters/Gorgon3.png");
         }
         if (presetChoice == GameManager.RockPaperScissors.Hiss)
         {
-            deckComposition = hissPreset;
             gorgon.Texture = ResourceLoader.Load<Texture2D>("res://assets/images/characters/Gorgon2.png");
 
         }
         if (presetChoice == GameManager.RockPaperScissors.Constrict)
         {
-            deckComposition = constrictPreset;
             gorgon.Texture = ResourceLoader.Load<Texture2D>("res://assets/images/characters/Gorgon1.png");
         }
-
-        
-
-    } 
-
-    Deck playerDeck;
-
-    public override void _Ready()
-    {
-        playerDeck = new Deck(deckComposition[0], deckComposition[1], deckComposition[2]);
+        playerDeck = new Deck(presetChoice);
         playerDeck.Name = "Deck";
         AddChild(playerDeck);
+
+
+
+    } 
+    
+    public void StartTurn()
+    {
+        Position = Vector2.Zero;
+        playerDeck.StartTurn();
     }
+
+    
+
 
     Vector2 lastScreenSize = Vector2.Zero;
     public override void _Process(double delta)

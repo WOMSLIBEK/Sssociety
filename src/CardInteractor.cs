@@ -76,7 +76,7 @@ public partial class CardInteractor : Node2D
 			
 
 			card.DeactivateCard();
-			card.Scale = new Vector2(1, 0.4f);
+			card.Scale = new Vector2(1, 1);
 
 			//reparent the node to the stack location
 			card.GetParent<Deck>().RemoveCardFromDeck(card);

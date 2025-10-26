@@ -1,54 +1,120 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class Deck : Node2D
 {
-    const int deckSize = 12;
+    const int deckSize = 3;
     Card[] cards = new Card[deckSize];
 
     //card dimensions are very unliekly to change
     Vector2 CardDimensions = new Vector2(104, 160);
 
-    
+    Card.AllCardTypes[] BitePreset = new Card.AllCardTypes[16] {
+        Card.AllCardTypes.Bite, Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
+        Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
+        Card.AllCardTypes.Hiss, Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
+        Card.AllCardTypes.Hiss,Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
+        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse,
+        Card.AllCardTypes.BiteUnique};
+    Card.AllCardTypes[] HissPreset = new Card.AllCardTypes[16] {
+        Card.AllCardTypes.Hiss, Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
+        Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
+        Card.AllCardTypes.Constrict, Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
+        Card.AllCardTypes.Constrict,Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
+        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse,
+        Card.AllCardTypes.HissUnique};
+
+    Card.AllCardTypes[] ConstrictPreset = new Card.AllCardTypes[16] {
+        Card.AllCardTypes.Constrict, Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
+        Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
+        Card.AllCardTypes.Bite, Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
+        Card.AllCardTypes.Bite,Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
+        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse,
+        Card.AllCardTypes.ConstrictUnique};
+
+    //this is so the deck can be reset after a round
+    GameManager.RockPaperScissors DeckSet = GameManager.RockPaperScissors.Bite;
+    Card.AllCardTypes[] DeckPool;
+
 
     public Deck(GameManager.RockPaperScissors preset)
     {
-
-/*
-        if (bite + hiss + constrict != deckSize)
+        DeckSet = preset;
+        if (GameManager.RockPaperScissors.Bite == preset)
         {
-            throw new ArgumentException("The total number of cards must be equal to the deck size: " + deckSize);
+            DeckPool = BitePreset;
         }
-
-        // Initialize cards array and add to scene tree
-        for (int i = 0; i < deckSize; i++)
+        if (GameManager.RockPaperScissors.Hiss == preset)
         {
-            if (i < bite)
-            {
-                cards[i] = new Card(GameManager.RockPaperScissors.Bite);
-            }
-            else if (i < bite + hiss && i >= bite)
-            {
-                cards[i] = new Card(GameManager.RockPaperScissors.Hiss);
-            }
-            else
-            {
-                cards[i] = new Card(GameManager.RockPaperScissors.Constrict);
-            }
-
-            cards[i].Name = "Card_" + i;
-            AddChild(cards[i]);
+            DeckPool = HissPreset;
         }
-*/
-
-
+        if (GameManager.RockPaperScissors.Constrict == preset)
+        {
+            DeckPool = ConstrictPreset;
+        }
     }
 
-    
+
     public override void _Ready()
     {
-        base._Ready();
+        ShuffleDeck();
+        RefillDeck();
     }
+
+    private void RefillDeck()
+    {
+        for (int i = 0; i < cards.Count(); i++)
+        {
+            if (cards[i] == null)
+            {
+                cards[i] = PullFromDeckPool();
+            }
+        }
+    }
+
+    //this is called by the player when your turn starts
+    public void StartTurn()
+    {
+        RefillDeck();
+        ResetCardPositions();
+    }
+    
+    private void ShuffleDeck()
+    {
+        Random rnd = new Random();
+        for(int i = 0; i < DeckPool.Count();i++)
+        {
+            int randomIndex = rnd.Next(0, DeckPool.Count()-1); // Generate random number between 0 and i
+            // Swap elements
+            Card.AllCardTypes temp = DeckPool[i];
+            DeckPool[i] = DeckPool[randomIndex];
+            DeckPool[randomIndex] = temp;
+            
+        }
+        
+    }
+    
+    private Card PullFromDeckPool()
+    {
+        for(int i = 0; i < DeckPool.Count(); i++)
+        {
+            if(DeckPool[i] != Card.AllCardTypes.Empty)
+            {
+                Card newCard = new Card(DeckPool[i]);
+                AddChild(newCard);
+                DeckPool[i] = Card.AllCardTypes.Empty;
+                return newCard;
+                
+            }
+        }
+        
+
+
+        return null;
+    }
+    
+
 
 
     Vector2 lastScreenSize = Vector2.Zero;
@@ -61,7 +127,7 @@ public partial class Deck : Node2D
         }
     }
 
-
+    
 
     private void ResetCardPositions()
     {

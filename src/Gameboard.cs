@@ -12,12 +12,7 @@ public partial class Gameboard : Node2D
     Stack<Card> cardsInPlay = new Stack<Card>();
 
 
-    //these are gameplay variables that are changed during gameplay
-    int turnDirection = 1;
 
-
-    int playerIndex = 0;
-    public int PlayerIndex{get{return playerIndex;}}
 
     Player[] players;
 
@@ -27,6 +22,8 @@ public partial class Gameboard : Node2D
         PackedScene packedPlayer = GD.Load<PackedScene>("res://scene_objects/Player.tscn");
         players = new Player[GameManager.gameManager.players.Count()];
 
+        
+        int playerIndex = 0;
         foreach ((GameManager.RockPaperScissors playerType, bool isAI) playerInfo in GameManager.gameManager.players)
         {
             Player newPlayer = (Player)packedPlayer.Instantiate();
@@ -41,8 +38,6 @@ public partial class Gameboard : Node2D
             playerIndex += 1;
 
         }
-        //makes it so the first player is first to play
-        playerIndex = 0;
     }
 
     private void GeneratePlayers()
@@ -87,37 +82,12 @@ public partial class Gameboard : Node2D
 
     private void LoadNextTurn()
     {
-        DetermineNextIndex();
+        GameManager.gameManager.UpdatePlayerIndex();
         LoadNextPlayer();
         EmitSignal(SignalName.NextTurn);
     }
 
-    private void DetermineNextIndex()
-    {
-        
-        if(turnDirection < 0)
-        {
-            for (int i = 0; i < -turnDirection; i++)
-            {
-                playerIndex -= 1;
-                if (playerIndex < 0)
-                {
-                    playerIndex = players.Count() - 1;
-                }
-            }
-            return;
-            
-        }
 
-        for(int i = 0; i < turnDirection; i++)
-        {
-            playerIndex += 1;
-            if(playerIndex >= players.Count())
-            {
-                playerIndex = 0;
-            }
-        }
-    }
 
     private void LoadNextPlayer()
     {
@@ -133,8 +103,8 @@ public partial class Gameboard : Node2D
             FuckThePlayerAway(players[i]);
 
         }
-        
-        players[playerIndex].Position = Vector2.Zero;
+
+        players[GameManager.gameManager.PlayerIndex].StartTurn();
 
     }
     

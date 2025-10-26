@@ -56,7 +56,7 @@ public partial class OtherPlayersDisplay : Node
     //FIX THIS THE oh who will even notice wtfd do something else goddamn 
     private void ResetCharacterPositions()
     {
-        int playerIndex = gameboard.PlayerIndex;
+        int playerIndex = GameManager.gameManager.PlayerIndex;
 
 
         foreach (Sprite2D child in GetChildren())
@@ -79,7 +79,7 @@ public partial class OtherPlayersDisplay : Node
             whoopsAllIndex += 1;
             float sinScale = GetViewport().GetVisibleRect().Size.Y / 3;
             GetChild<Sprite2D>(trueIndex).Position = new Vector2(step * whoopsAllIndex,
-            GetChild<Sprite2D>(trueIndex).Texture.GetSize().Y +
+            GetChild<Sprite2D>(trueIndex).Texture.GetSize().Y/1.8f +
             sinScale - sinScale*Mathf.Sin(3.14f*whoopsAllIndex/GameManager.gameManager.players.Count()));
             
 

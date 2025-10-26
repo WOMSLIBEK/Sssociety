@@ -1,8 +1,42 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class GameManager : Node
 {
+    //these are gameplay variables that are changed during gameplay
+    public int turnDirection = 1;
+    int playerIndex = 0;
+    public int PlayerIndex{get{return playerIndex;}}
+
+
+    public void UpdatePlayerIndex(int customAmount = 0)
+    {
+        
+        if(GameManager.gameManager.turnDirection < 0)
+        {
+            for (int i = 0; i < -GameManager.gameManager.turnDirection + customAmount; i++)
+            {
+                playerIndex -= 1;
+                if (playerIndex < 0)
+                {
+                    playerIndex = players.Count() - 1;
+                }
+            }
+            return;
+            
+        }
+
+        for(int i = 0; i < GameManager.gameManager.turnDirection+ customAmount; i++)
+        {
+            playerIndex += 1;
+            if(playerIndex >= players.Count())
+            {
+                playerIndex = 0;
+            }
+        }
+    }
+
     public enum RockPaperScissors
     {
         Bite,
