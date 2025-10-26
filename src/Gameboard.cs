@@ -59,6 +59,12 @@ public partial class Gameboard : Node2D
     //returns true if valid card and false if invalid
     public bool AddCardToStack(Card card)
     {
+        //this is where the special cards abilities are activated
+        if(card.cardType == GameManager.RockPaperScissors.Special)
+        {
+            card.ActivateSpecialAbility();
+        }
+
         if (cardsInPlay.Count != 0)
         {
             if (!GameManager.ValidInteraction(

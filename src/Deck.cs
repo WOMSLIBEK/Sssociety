@@ -9,10 +9,12 @@ public partial class Deck : Node2D
     //card dimensions are very unliekly to change
     Vector2 CardDimensions = new Vector2(104, 160);
 
+    
 
-
-    public Deck(int bite, int hiss, int constrict)
+    public Deck(GameManager.RockPaperScissors preset)
     {
+
+/*
         if (bite + hiss + constrict != deckSize)
         {
             throw new ArgumentException("The total number of cards must be equal to the deck size: " + deckSize);
@@ -37,7 +39,7 @@ public partial class Deck : Node2D
             cards[i].Name = "Card_" + i;
             AddChild(cards[i]);
         }
-
+*/
 
 
     }

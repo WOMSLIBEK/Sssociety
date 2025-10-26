@@ -7,7 +7,8 @@ public partial class GameManager : Node
     {
         Bite,
         Hiss,
-        Constrict
+        Constrict,
+        Special
     }
 
 
@@ -27,6 +28,13 @@ public partial class GameManager : Node
     //value1 is the established card and value2 is the new card
     static public bool ValidInteraction(RockPaperScissors value1, RockPaperScissors value2)
     {
+        //special cards are always valid
+        if (value2 == RockPaperScissors.Special)
+        {
+            return true;
+        }
+        
+
         if (value1 == value2)
         {
             return false;

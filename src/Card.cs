@@ -37,11 +37,15 @@ public partial class Card : Sprite2D
         {
             Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_hiss.png");
         }
-        
-        if(cardType == GameManager.RockPaperScissors.Constrict)
+
+        if (cardType == GameManager.RockPaperScissors.Constrict)
         {
             Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_constrict.png");
         }
+
+
+        
+
     }
 
     public override void _Ready()
@@ -82,6 +86,11 @@ public partial class Card : Sprite2D
             ZIndex = 0;
         }
     }
+    public void ActivateSpecialAbility()
+    {
+        
+    }
+
     
     public void DeactivateCard()
     {
