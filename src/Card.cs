@@ -75,6 +75,18 @@ public partial class Card : Sprite2D
             Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_constrict.png");
             return;
         }
+
+        if (cardType == AllCardTypes.Skip)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_wild.png");
+            return;
+        }
+        if (cardType == AllCardTypes.Reverse)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_reverse.png");
+            return;
+        }
+        
         Texture = ResourceLoader.Load<Texture2D>("res://assets/images/UI/Egg.png");
 
 
