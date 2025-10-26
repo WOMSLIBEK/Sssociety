@@ -81,10 +81,9 @@ public partial class Gameboard : Node2D
 
     private void LoadNextTurn()
     {
-        EmitSignal(SignalName.NextTurn);
-
         DetermineNextIndex();
         LoadNextPlayer();
+        EmitSignal(SignalName.NextTurn);
     }
 
     private void DetermineNextIndex()

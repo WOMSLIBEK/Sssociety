@@ -17,10 +17,11 @@ public partial class OtherPlayersDisplay : Node
 
         gameboard.Connect(Gameboard.SignalName.NextTurn, Callable.From(ResetCharacterPositions));
 
+        PackedScene packedGorgon = GD.Load<PackedScene>("res://scene_objects/GorgonOtherPlayer.tscn");
         //generate the sprites
         foreach ((GameManager.RockPaperScissors playerType, bool isAI) playerInfo in GameManager.gameManager.players)
         {
-            Sprite2D gorgon = new Sprite2D();
+            Sprite2D gorgon = packedGorgon.Instantiate<Sprite2D>();
 
             if (playerInfo.playerType == GameManager.RockPaperScissors.Bite)
             {
@@ -42,6 +43,16 @@ public partial class OtherPlayersDisplay : Node
         ResetCharacterPositions();
     }
 
+    Vector2 lastScreenSize = Vector2.Zero;
+    public override void _Process(double delta)
+    {
+        if(GetViewport().GetVisibleRect().Size != lastScreenSize)
+        {
+            lastScreenSize = GetViewport().GetVisibleRect().Size;
+            ResetCharacterPositions();
+        }
+    }
+
     //FIX THIS THE oh who will even notice wtfd do something else goddamn 
     private void ResetCharacterPositions()
     {
@@ -54,7 +65,7 @@ public partial class OtherPlayersDisplay : Node
         }
 
         int whoopsAllIndex = 0;
-        for (int i = playerIndex + 2; i < GameManager.gameManager.players.Count() + playerIndex + 1; i++)
+        for (int i = playerIndex + 1; i < GameManager.gameManager.players.Count() + playerIndex; i++)
         {
             int trueIndex = i;
             if (i >= GameManager.gameManager.players.Count())
@@ -62,8 +73,15 @@ public partial class OtherPlayersDisplay : Node
                 trueIndex -= GameManager.gameManager.players.Count();
             }
 
-            GetChild<Sprite2D>(trueIndex).Position = new Vector2(50 + whoopsAllIndex * 200, 100);
+
+            
+            float step = GetViewport().GetVisibleRect().Size.X / GameManager.gameManager.players.Count();
             whoopsAllIndex += 1;
+            float sinScale = GetViewport().GetVisibleRect().Size.Y / 3;
+            GetChild<Sprite2D>(trueIndex).Position = new Vector2(step * whoopsAllIndex,
+            GetChild<Sprite2D>(trueIndex).Texture.GetSize().Y +
+            sinScale - sinScale*Mathf.Sin(3.14f*whoopsAllIndex/GameManager.gameManager.players.Count()));
+            
 
 
 

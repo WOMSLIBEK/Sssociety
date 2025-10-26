@@ -23,6 +23,10 @@ GameManager="*res://src/GameManager.cs"
 
 project/assembly_name="Sssociety"
 
+[gui]
+
+theme/custom_font="uid://b0nkl3ifn24lh"
+
 [input]
 
 SelectCard={
