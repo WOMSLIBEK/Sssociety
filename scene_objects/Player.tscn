@@ -3,12 +3,36 @@
 [ext_resource type="Script" uid="uid://dkicj400got8r" path="res://src/Player.cs" id="1_uxywe"]
 [ext_resource type="Script" uid="uid://bxb7dlqxkhrgc" path="res://src/CardInteractor.cs" id="2_obsdd"]
 
-[node name="Player1" type="Node2D" node_paths=PackedStringArray("gorgon")]
+[node name="Player1" type="Node2D" node_paths=PackedStringArray("gorgon", "eggCounter")]
 script = ExtResource("1_uxywe")
 gorgon = NodePath("Gorgon")
+eggCounter = NodePath("CanvasLayer/Control/EggCounter")
 
 [node name="CardInteractor" type="Node2D" parent="."]
 script = ExtResource("2_obsdd")
 
 [node name="Gorgon" type="Sprite2D" parent="."]
 scale = Vector2(2, 2)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EggCounter" type="RichTextLabel" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -45.0
+offset_right = 244.0
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "Number of [color=#a4ea88]EGGS[/color]: 0"
+fit_content = true

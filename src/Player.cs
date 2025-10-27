@@ -5,14 +5,28 @@ public partial class Player : Node2D
 {
     [Export]
     Sprite2D gorgon;
+    [Export]
+    public RichTextLabel eggCounter;
 
     //default is none of the main presets
     int[] deckComposition = new int[3] { 4, 4, 4 };
 
-//    int[] bitePreset = new int[3] { 6, 4, 2 };
-//    int[] hissPreset = new int[3] { 2, 6, 4 };
-//    int[] constrictPreset = new int[3] {4,2,6 };
     Deck playerDeck;
+
+
+    int numberOfEggs = 0;
+
+    public int NumberOfEggs {
+        get
+        {
+            return numberOfEggs;
+        }
+        set
+        {
+            numberOfEggs = value;
+            UpdateEggCounter();
+        } 
+    }
 
     public void InitialisePlayer(GameManager.RockPaperScissors presetChoice, bool AI)
     {
@@ -36,11 +50,23 @@ public partial class Player : Node2D
 
 
     } 
-    
+
+    private void UpdateEggCounter()
+    {
+        eggCounter.Text = "Number of [color=#a4ea88]EGGS[/color]: " + numberOfEggs.ToString();
+        
+        
+    }
+
     public void StartTurn()
     {
-        Position = Vector2.Zero;
+
         playerDeck.StartTurn();
+    }
+    
+    public void StartRound()
+    {
+        playerDeck.ResetHand();
     }
 
     
