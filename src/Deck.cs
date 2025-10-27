@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 public partial class Deck : Node2D
@@ -34,35 +35,58 @@ public partial class Deck : Node2D
         Card.AllCardTypes.ConstrictUnique};
 
     //this is so the deck can be reset after a round
-    GameManager.RockPaperScissors DeckSet = GameManager.RockPaperScissors.Bite;
+    Card.AllCardTypes[] DeckSet;
     Card.AllCardTypes[] DeckPool;
 
 
     public Deck(GameManager.RockPaperScissors preset)
     {
-        DeckSet = preset;
         if (GameManager.RockPaperScissors.Bite == preset)
         {
-            DeckPool = BitePreset;
+            DeckSet = BitePreset;
         }
         if (GameManager.RockPaperScissors.Hiss == preset)
         {
-            DeckPool = HissPreset;
+            DeckSet = HissPreset;
         }
         if (GameManager.RockPaperScissors.Constrict == preset)
         {
-            DeckPool = ConstrictPreset;
+            DeckSet = ConstrictPreset;
         }
     }
 
 
     public override void _Ready()
     {
-        ShuffleDeck();
-        RefillDeck();
+        ResetHand();
     }
 
-    private void RefillDeck()
+    //this is called at the begining of a new round/game
+    public void ResetHand()
+    {
+        DeckPool = DeckSet;
+        ShuffleDeck();
+
+        EmptyHand();
+        RefillHand();
+
+        ResetCardPositions();
+    }
+
+    private void EmptyHand(){
+        for (int i = 0; i < cards.Count(); i++)
+        {
+            cards[i] = null;
+        }
+
+        //so visuals match
+        foreach (Node child in GetChildren())
+        {
+            child.QueueFree();
+        }
+    }
+
+    private void RefillHand()
     {
         for (int i = 0; i < cards.Count(); i++)
         {
@@ -76,8 +100,64 @@ public partial class Deck : Node2D
     //this is called by the player when your turn starts
     public void StartTurn()
     {
-        RefillDeck();
+        RefillHand();
         ResetCardPositions();
+        if (!DoesValidMoveExist())
+        {
+            //end the round, give the victor the eggs and start a new round
+            GetParent().GetParent<Gameboard>().StartRound();
+        }
+    }
+    
+    //the decision the ai makes just the first valid choice
+    public Card AIDecision(){
+        if (GetParent().GetParent<Gameboard>().cardsInPlay.Count <= 0)
+        {
+            return cards[0];
+        }
+
+        Card topOfDeck = GetParent().GetParent<Gameboard>().cardsInPlay.Peek();
+
+        foreach (Card card in cards)
+        {
+            if (card == null)
+            {
+                continue;
+            }
+
+            if (GameManager.gameManager.ValidInteraction(topOfDeck.cardType, card.cardType))
+            {
+
+                return card;
+            }
+
+        }
+
+        return null;
+    }
+
+    private bool DoesValidMoveExist(){
+        if (GetParent().GetParent<Gameboard>().cardsInPlay.Count <= 0)
+        {
+            return true;
+        }
+
+        Card topOfDeck = GetParent().GetParent<Gameboard>().cardsInPlay.Peek();
+        bool valid = false;
+        foreach (Card card in cards)
+        {
+            if(card == null){
+                continue;
+            }
+
+            if (GameManager.gameManager.ValidInteraction(topOfDeck.cardType, card.cardType))
+            {
+                
+                valid = true;
+            }
+
+        }
+        return valid;
     }
     
     private void ShuffleDeck()
@@ -143,7 +223,7 @@ public partial class Deck : Node2D
 
 
             cards[i].CardStaticPosition = offset + new Vector2(
-                ((i - deckSize / 2) * (screenSize.X / 1.5f)) / deckSize, -CardDimensions.Y / 2 - 20); // Slight offset for visibility
+                ((i - deckSize / 2) * (screenSize.X / 4.5f)) / deckSize, -CardDimensions.Y / 2 - 20); // Slight offset for visibility
 
         }
     }

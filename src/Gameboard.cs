@@ -9,10 +9,14 @@ public partial class Gameboard : Node2D
     [Signal]
     public delegate void NextTurnEventHandler();
 
-    Stack<Card> cardsInPlay = new Stack<Card>();
+    public Stack<Card> cardsInPlay = new Stack<Card>();
 
     [Export]
     SFXPlayer theSFXPlayer;
+    [Export]
+    EggPile eggPile;
+
+    int eggPrizePool = 4;
 
 
 
@@ -44,10 +48,6 @@ public partial class Gameboard : Node2D
         }
     }
 
-    private void GeneratePlayers()
-    {
-
-    }
 
     //useful for some things but shouldnt give direct acces to cards in practice
     public int GetCardCount()
@@ -66,7 +66,7 @@ public partial class Gameboard : Node2D
 
         if (cardsInPlay.Count != 0)
         {
-            if (!GameManager.ValidInteraction(
+            if (!GameManager.gameManager.ValidInteraction(
                 (GameManager.RockPaperScissors)cardsInPlay.Peek().cardType,
                 (GameManager.RockPaperScissors)card.cardType))
             {
@@ -76,24 +76,67 @@ public partial class Gameboard : Node2D
 
         theSFXPlayer.PlaySFXBasedOnCard(card);
 
-
+        cardsInPlay.Push(card);
 
         LoadNextTurn();
 
         
-
-        cardsInPlay.Push(card);
-
-
-
         return true;
     }
 
     private void LoadNextTurn()
     {
         GameManager.gameManager.UpdatePlayerIndex();
-        LoadNextPlayer();
+        if (!players[GameManager.gameManager.PlayerIndex].isAnAI)
+        {
+            //since this is purely visual
+            LoadNextPlayer();
+        }
+
+        players[GameManager.gameManager.PlayerIndex].StartTurn();
         EmitSignal(SignalName.NextTurn);
+    }
+
+    //starting a new round means loading a new player, giving eggs to the correct player, reshuffling deck, reseting card stack
+    public void StartRound()
+    {
+        //this sets it to the previous player the victor as the starting player of the next round
+        GameManager.gameManager.turnDirection = -GameManager.gameManager.turnDirection;
+        GameManager.gameManager.UpdatePlayerIndex();
+        //int victorIndex = GameManager.gameManager.PlayerIndex;
+        //now we must load the new player so thatthe visuals of egg giving make sense
+        LoadNextPlayer();
+        eggPile.PlayEggAnimation();
+        GivePlayerEggs();
+
+        cardsInPlay = new Stack<Card>();
+        foreach (Player player in players)
+        {
+            player.StartRound();
+        }
+
+        //have to remove children from card stack position
+        CardStackMaintainer oldStack = GetNode<CardStackMaintainer>("CardStackPosition");
+        foreach(Node child in oldStack.GetChildren())
+        {
+            child.QueueFree();
+        }
+
+        GameManager.gameManager.ResetVariables();
+
+        //this is load next turn without the update player index
+        LoadNextPlayer();
+        //players[GameManager.gameManager.PlayerIndex].StartTurn();
+        //EmitSignal(SignalName.NextTurn);
+
+
+
+
+    }
+
+    private void GivePlayerEggs()
+    {
+        players[GameManager.gameManager.PlayerIndex].NumberOfEggs += eggPrizePool;
     }
 
 
@@ -113,18 +156,17 @@ public partial class Gameboard : Node2D
 
         }
 
-        players[GameManager.gameManager.PlayerIndex].StartTurn();
+        players[GameManager.gameManager.PlayerIndex].Position = Vector2.Zero;
+        players[GameManager.gameManager.PlayerIndex].eggCounter.GetParent<Control>().Visible = true;
+
 
     }
     
     private void FuckThePlayerAway(Player player)
     {
         player.Position = new Vector2(0, 5000);
+        player.eggCounter.GetParent<Control>().Visible = false;
+
     }
-    
-    
-
-
-
     
 }

@@ -4,10 +4,37 @@ using System.Linq;
 
 public partial class GameManager : Node
 {
+    [Signal]
+    public delegate void RuleOffsetChangedEventHandler();
+
+
     //these are gameplay variables that are changed during gameplay
     public int turnDirection = 1;
+
+    int ruleOffset = 0;
+    public int RuleOffset {
+        get
+        {
+            return ruleOffset;
+        }
+        set
+        {
+            ruleOffset = value;
+            EmitSignal(SignalName.RuleOffsetChanged);
+        }
+    }
+
+
     int playerIndex = 0;
-    public int PlayerIndex{get{return playerIndex;}}
+    public int PlayerIndex { get { return playerIndex; } }
+    
+
+    //this calls at the start of a new round
+    public void ResetVariables()
+    {
+        turnDirection = 1;
+        ruleOffset = 0;
+    }
 
 
     public void UpdatePlayerIndex(int customAmount = 0)
@@ -60,33 +87,93 @@ public partial class GameManager : Node
 
 
     //value1 is the established card and value2 is the new card
-    static public bool ValidInteraction(RockPaperScissors value1, RockPaperScissors value2)
+    public bool ValidInteraction(RockPaperScissors value1, RockPaperScissors value2)
     {
         //special cards are always valid
-        if (value2 == RockPaperScissors.Special)
+        if (value2 == RockPaperScissors.Special || value1 == RockPaperScissors.Special)
         {
             return true;
         }
+
+        //normal case
+        if (ruleOffset == 0)
+        {
+            if (value1 == value2)
+            {
+                return false;
+            }
+
+            if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Constrict)
+            {
+                return false;
+            }
+
+            if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Bite)
+            {
+                return false;
+            }
+            if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Hiss)
+            {
+                return false;
+            }
+        }
+        //the case where rules are reversed
+        if (ruleOffset == 1)
+        {
+            if (value1 == value2)
+            {
+                return false;
+            }
+
+            if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Hiss)
+            {
+                return false;
+            }
+
+            if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Constrict)
+            {
+                return false;
+            }
+            if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Bite)
+            {
+                return false;
+            }
+        }
+        //the case where same beats same
+        if(ruleOffset == 2)
+        {
+
+            if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Constrict)
+            {
+                return false;
+            }
+
+            if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Bite)
+            {
+                return false;
+            }
+            if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Hiss)
+            {
+                return false;
+            }
+
+            if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Hiss)
+            {
+                return false;
+            }
+
+            if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Constrict)
+            {
+                return false;
+            }
+            if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Bite)
+            {
+                return false;
+            }
+        }
         
 
-        if (value1 == value2)
-        {
-            return false;
-        }
 
-        if (value1 == RockPaperScissors.Bite && value2 == RockPaperScissors.Constrict)
-        {
-            return false;
-        }
-
-        if (value1 == RockPaperScissors.Hiss && value2 == RockPaperScissors.Bite)
-        {
-            return false;
-        }
-        if (value1 == RockPaperScissors.Constrict && value2 == RockPaperScissors.Hiss)
-        {
-            return false;
-        }
         
 
         return true;
