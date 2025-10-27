@@ -13,6 +13,8 @@ public partial class Gameboard : Node2D
 
     [Export]
     SFXPlayer theSFXPlayer;
+    [Export]
+    EggPile eggPile;
 
     int eggPrizePool = 4;
 
@@ -64,7 +66,7 @@ public partial class Gameboard : Node2D
 
         if (cardsInPlay.Count != 0)
         {
-            if (!GameManager.ValidInteraction(
+            if (!GameManager.gameManager.ValidInteraction(
                 (GameManager.RockPaperScissors)cardsInPlay.Peek().cardType,
                 (GameManager.RockPaperScissors)card.cardType))
             {
@@ -99,6 +101,7 @@ public partial class Gameboard : Node2D
         //int victorIndex = GameManager.gameManager.PlayerIndex;
         //now we must load the new player so thatthe visuals of egg giving make sense
         LoadNextPlayer();
+        eggPile.PlayEggAnimation();
         GivePlayerEggs();
 
         cardsInPlay = new Stack<Card>();
@@ -129,13 +132,8 @@ public partial class Gameboard : Node2D
     private void GivePlayerEggs()
     {
         players[GameManager.gameManager.PlayerIndex].NumberOfEggs += eggPrizePool;
-        PlayEggAnimation();
     }
 
-    private void PlayEggAnimation()
-    {
-        
-    }
 
 
     private void LoadNextPlayer()
