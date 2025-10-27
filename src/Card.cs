@@ -86,6 +86,11 @@ public partial class Card : Sprite2D
             Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_reverse.png");
             return;
         }
+        if (cardType == AllCardTypes.Inverse)
+        {
+            Texture = ResourceLoader.Load<Texture2D>("res://assets/images/cards/card_inverse.png");
+            return;
+        }
         
         Texture = ResourceLoader.Load<Texture2D>("res://assets/images/UI/Egg.png");
 
@@ -142,11 +147,28 @@ public partial class Card : Sprite2D
             GameManager.gameManager.turnDirection *= -1;
         }
 
-        if(trueType == AllCardTypes.Skip)
+        if (trueType == AllCardTypes.Skip)
         {
             //makes the game go for an extra turn before loading the new one
             GameManager.gameManager.UpdatePlayerIndex(GameManager.gameManager.turnDirection);
         }
+
+        if (trueType == AllCardTypes.Inverse)
+        {
+            if (GameManager.gameManager.RuleOffset == 0)
+            {
+                GameManager.gameManager.RuleOffset = 1;
+                return;
+            }
+
+            if(GameManager.gameManager.RuleOffset == 1)
+            {
+                GameManager.gameManager.RuleOffset = 0;
+                return;
+            }
+        }
+        
+
         
         
     }

@@ -104,7 +104,6 @@ public partial class Deck : Node2D
         ResetCardPositions();
         if(!DoesValidMoveExist()){
             //end the round, give the victor the eggs and start a new round
-            GD.Print("no valid moves");
             GetParent().GetParent<Gameboard>().StartRound();
         }
     }
@@ -123,7 +122,7 @@ public partial class Deck : Node2D
                 continue;
             }
 
-            if (GameManager.ValidInteraction(topOfDeck.cardType, card.cardType))
+            if (GameManager.gameManager.ValidInteraction(topOfDeck.cardType, card.cardType))
             {
                 
                 valid = true;
