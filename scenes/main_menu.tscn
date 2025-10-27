@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bmh1oktq8eb2e" path="res://scene_objects/CharacterSelector.tscn" id="2_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://dwmtcjf0e3spp" path="res://assets/images/UI/title_back.png" id="3_bqqt6"]
 [ext_resource type="Texture2D" uid="uid://c6cfiw6rm1h3l" path="res://assets/images/UI/Title_gorgons.png" id="3_wu84c"]
-[ext_resource type="AudioStream" uid="uid://caa4ofpm1d8kk" path="res://assets/music/untitled snake game main theme v3.wav" id="5_8ln24"]
+[ext_resource type="AudioStream" uid="uid://duieiqo8itqx3" path="res://assets/music/[very titled snake game] title theme [chilled].mp3" id="5_rtw2f"]
 [ext_resource type="AudioStream" uid="uid://d154jxmjw10xs" path="res://assets/music/hiss 1.wav" id="6_rtw2f"]
 
 [node name="MainMenu" type="Control" node_paths=PackedStringArray("main", "settings", "gameSetup", "totalPlayersLabel", "totalPlayers", "numberOfAIsLabel", "numberOfAIs", "characterSelectors", "AICharacterSelectors", "SFXPlayer")]
@@ -230,7 +230,7 @@ theme_override_font_sizes/font_size = 30
 text = "Start!"
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_8ln24")
+stream = ExtResource("5_rtw2f")
 autoplay = true
 bus = &"Music"
 

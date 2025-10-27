@@ -102,10 +102,38 @@ public partial class Deck : Node2D
     {
         RefillHand();
         ResetCardPositions();
-        if(!DoesValidMoveExist()){
+        if (!DoesValidMoveExist())
+        {
             //end the round, give the victor the eggs and start a new round
             GetParent().GetParent<Gameboard>().StartRound();
         }
+    }
+    
+    //the decision the ai makes just the first valid choice
+    public Card AIDecision(){
+        if (GetParent().GetParent<Gameboard>().cardsInPlay.Count <= 0)
+        {
+            return cards[0];
+        }
+
+        Card topOfDeck = GetParent().GetParent<Gameboard>().cardsInPlay.Peek();
+
+        foreach (Card card in cards)
+        {
+            if (card == null)
+            {
+                continue;
+            }
+
+            if (GameManager.gameManager.ValidInteraction(topOfDeck.cardType, card.cardType))
+            {
+
+                return card;
+            }
+
+        }
+
+        return null;
     }
 
     private bool DoesValidMoveExist(){

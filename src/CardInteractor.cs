@@ -57,41 +57,44 @@ public partial class CardInteractor : Node2D
 			selectedCard.GlobalPosition = GetGlobalMousePosition();
 		}
 	}
-	
+
 	private void PlaceCardOnGameboard(Card card)
 	{
-		Vector2 placementDimensions = GetViewport().GetVisibleRect().Size/4;
+		Vector2 placementDimensions = GetViewport().GetVisibleRect().Size / 4;
 		Rect2 placeArea = new Rect2(gameboard.Position + GetViewport().GetVisibleRect().Size / 2 - .5f * placementDimensions,
 		 placementDimensions);
 
 		if (placeArea.HasPoint(GetGlobalMousePosition()))
 		{
-			card.ResetPosition();
-
-			if (!gameboard.AddCardToStack(card))
-			{
-				return;
-			}
-			//so they are on different layers and appear on top of each other
-			card.ZIndex = gameboard.GetCardCount();
-			
-
-			card.DeactivateCard();
-			card.Scale = new Vector2(1, 1);
-
-			//reparent the node to the stack location
-			card.GetParent<Deck>().RemoveCardFromDeck(card);
-			card.GetParent().RemoveChild(card);
-			stackPosition.AddChild(card);
-
-			card.CardStaticPosition = new Vector2(0, -gameboard.GetCardCount() * 5);
-
-
+			PlaceCard(card);
 		}
+
+	}
+	
+	public void PlaceCard(Card card)
+	{
 		
 		card.ResetPosition();
-		
-	}
+
+		if (!gameboard.AddCardToStack(card))
+		{
+			return;
+		}
+		//so they are on different layers and appear on top of each other
+		card.ZIndex = gameboard.GetCardCount();
+
+
+		card.DeactivateCard();
+		card.Scale = new Vector2(1, 1);
+
+		//reparent the node to the stack location
+		card.GetParent<Deck>().RemoveCardFromDeck(card);
+		card.GetParent().RemoveChild(card);
+		stackPosition.AddChild(card);
+
+		card.CardStaticPosition = new Vector2(0, -gameboard.GetCardCount() * 5);
+		card.ResetPosition();
+    }
 	
 	private Card GetTopSelectableCard()
 	{
