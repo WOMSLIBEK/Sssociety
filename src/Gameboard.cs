@@ -87,7 +87,12 @@ public partial class Gameboard : Node2D
     private void LoadNextTurn()
     {
         GameManager.gameManager.UpdatePlayerIndex();
-        LoadNextPlayer();
+        if (!players[GameManager.gameManager.PlayerIndex].isAnAI)
+        {
+            //since this is purely visual
+            LoadNextPlayer();
+        }
+
         players[GameManager.gameManager.PlayerIndex].StartTurn();
         EmitSignal(SignalName.NextTurn);
     }
@@ -152,7 +157,7 @@ public partial class Gameboard : Node2D
         }
 
         players[GameManager.gameManager.PlayerIndex].Position = Vector2.Zero;
-        players[GameManager.gameManager.PlayerIndex].eggCounter.Visible = true;
+        players[GameManager.gameManager.PlayerIndex].eggCounter.GetParent<Control>().Visible = true;
 
 
     }
@@ -160,7 +165,7 @@ public partial class Gameboard : Node2D
     private void FuckThePlayerAway(Player player)
     {
         player.Position = new Vector2(0, 5000);
-        player.eggCounter.Visible = false;
+        player.eggCounter.GetParent<Control>().Visible = false;
 
     }
     

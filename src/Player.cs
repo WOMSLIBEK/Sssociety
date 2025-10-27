@@ -7,11 +7,15 @@ public partial class Player : Node2D
     Sprite2D gorgon;
     [Export]
     public RichTextLabel eggCounter;
+    [Export]
+    public RichTextLabel playerNumber;
 
     //default is none of the main presets
     int[] deckComposition = new int[3] { 4, 4, 4 };
 
     Deck playerDeck;
+
+    public bool isAnAI = false;
 
 
     int numberOfEggs = 0;
@@ -47,7 +51,7 @@ public partial class Player : Node2D
         playerDeck.Name = "Deck";
         AddChild(playerDeck);
 
-
+        isAnAI = AI;
 
     } 
 
@@ -58,11 +62,22 @@ public partial class Player : Node2D
         
     }
 
+    double cardPlayCounter = 0;
+    bool AIAboutToPlayCard = false;
     public void StartTurn()
     {
-
         playerDeck.StartTurn();
+        playerNumber.Text = "Player " + (GameManager.gameManager.PlayerIndex + 1).ToString();
+
+        if (isAnAI)
+        {
+            
+            AIAboutToPlayCard = true;
+            
+        }
     }
+
+
     
     public void StartRound()
     {
@@ -75,10 +90,23 @@ public partial class Player : Node2D
     Vector2 lastScreenSize = Vector2.Zero;
     public override void _Process(double delta)
     {
-        if(GetViewport().GetVisibleRect().Size != lastScreenSize)
+        if (GetViewport().GetVisibleRect().Size != lastScreenSize)
         {
             lastScreenSize = GetViewport().GetVisibleRect().Size;
             gorgon.Position = GetViewport().GetVisibleRect().Size - .5f * gorgon.Texture.GetSize() * gorgon.Scale; ;
+        }
+        
+        if (AIAboutToPlayCard)
+        {
+            cardPlayCounter += delta;
+            if (cardPlayCounter > 1)
+            {
+                Card card = playerDeck.AIDecision();
+                GetNode<CardInteractor>("CardInteractor").PlaceCard(card);
+                AIAboutToPlayCard = false;
+                cardPlayCounter = 0;
+            }
+            
         }
     }
 
