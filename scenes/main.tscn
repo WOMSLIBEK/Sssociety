@@ -99,6 +99,17 @@ bbcode_enabled = true
 text = "[right] [color=#83fcfc]CONSTRICT[/color] beats [color=#f7e943]HISS[/color]"
 fit_content = true
 
+[node name="RoundCounter" type="RichTextLabel" parent="InGameUI/Control"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+offset_right = 300.0
+offset_bottom = 33.0
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[left] Round 4/4"
+fit_content = true
+
 [node name="ThemePLayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_tbgi4")
 autoplay = true

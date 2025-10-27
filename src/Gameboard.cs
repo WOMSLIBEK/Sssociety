@@ -18,6 +18,8 @@ public partial class Gameboard : Node2D
 
     int eggPrizePool = 4;
 
+    int roundsRemaining = 4;
+
 
 
 
@@ -100,6 +102,42 @@ public partial class Gameboard : Node2D
     //starting a new round means loading a new player, giving eggs to the correct player, reshuffling deck, reseting card stack
     public void StartRound()
     {
+        roundsRemaining -= 1;
+        GetParent().GetNode<RichTextLabel>("InGameUI/Control/RoundCounter").Text =
+        "[left] Round " + roundsRemaining.ToString() + "/4";
+        if(roundsRemaining == 0)
+        {
+            Player bestPlayer = players[0];
+            foreach (Player player in players)
+            {
+                if (player.NumberOfEggs > bestPlayer.NumberOfEggs)
+                {
+                    bestPlayer = player;
+                }
+            }
+            Sprite2D gorgon = bestPlayer.GetNode<Sprite2D>("Gorgon");
+            bestPlayer.RemoveChild(gorgon);
+            String victoryText = bestPlayer.GetNode<RichTextLabel>("CanvasLayer/Control/PlayerNumber").Text;
+            victoryText += " WINS!";
+            victoryText = "[center] " + victoryText;
+
+            PackedScene packedVictory = GD.Load<PackedScene>("res://scenes/victory_room.tscn");
+            Node2D victoryScene = packedVictory.Instantiate<Node2D>();
+            victoryScene.GetNode<RichTextLabel>("CanvasLayer/Control/RichTextLabel").Text = victoryText;
+            victoryScene.GetNode<TextureRect>("CanvasLayer/Control/TextureRect").Texture = gorgon.Texture;
+            //victoryScene.AddChild(gorgon);
+
+            foreach (Node child in GetParent<Node2D>().GetChildren())
+            {
+                child.QueueFree();
+            }
+            GetParent<Node2D>().AddChild(victoryScene);
+            return;
+
+
+
+            
+        }
         //this sets it to the previous player the victor as the starting player of the next round
         GameManager.gameManager.turnDirection = -GameManager.gameManager.turnDirection;
         GameManager.gameManager.UpdatePlayerIndex();

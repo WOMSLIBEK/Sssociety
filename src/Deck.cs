@@ -11,28 +11,25 @@ public partial class Deck : Node2D
     //card dimensions are very unliekly to change
     Vector2 CardDimensions = new Vector2(104, 160);
 
-    Card.AllCardTypes[] BitePreset = new Card.AllCardTypes[16] {
+    Card.AllCardTypes[] BitePreset = new Card.AllCardTypes[15] {
         Card.AllCardTypes.Bite, Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
         Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
         Card.AllCardTypes.Hiss, Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
         Card.AllCardTypes.Hiss,Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
-        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse,
-        Card.AllCardTypes.BiteUnique};
-    Card.AllCardTypes[] HissPreset = new Card.AllCardTypes[16] {
+        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse};
+    Card.AllCardTypes[] HissPreset = new Card.AllCardTypes[15] {
         Card.AllCardTypes.Hiss, Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
         Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
         Card.AllCardTypes.Constrict, Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
         Card.AllCardTypes.Constrict,Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
-        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse,
-        Card.AllCardTypes.HissUnique};
+        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse};
 
-    Card.AllCardTypes[] ConstrictPreset = new Card.AllCardTypes[16] {
+    Card.AllCardTypes[] ConstrictPreset = new Card.AllCardTypes[15] {
         Card.AllCardTypes.Constrict, Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
         Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,Card.AllCardTypes.Constrict,
         Card.AllCardTypes.Bite, Card.AllCardTypes.Bite,Card.AllCardTypes.Bite,
         Card.AllCardTypes.Bite,Card.AllCardTypes.Hiss,Card.AllCardTypes.Hiss,
-        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse,
-        Card.AllCardTypes.ConstrictUnique};
+        Card.AllCardTypes.Skip,Card.AllCardTypes.Reverse,Card.AllCardTypes.Inverse};
 
     //this is so the deck can be reset after a round
     Card.AllCardTypes[] DeckSet;
